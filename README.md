@@ -59,7 +59,7 @@ The 'release-accelwattch' branch of the [GPU App Collection](https://github.com/
 
 ## Accel-Sim Components
 
-![Accel-Sim Overview](https://github.com/VijayKandiah/accel-sim.github.io/blob/master/assets/img/accel-sim-crop.svg)
+![Accel-Sim Overview](https://github.com/accel-sim/accel-sim.github.io/blob/master/assets/img/accel-sim-crop.svg)
 
 1. **Accel-Sim Tracer**: An NVBit tool for generating SASS traces from CUDA applications. Code for the tool lives in ./util/tracer\_nvbit/. To make the tool:  
   
@@ -245,7 +245,7 @@ CUDA\_INSTALL\_PATH, the run ./travis.sh.
 
 ## AccelWattch Overview
 
-![AccelWattch Overview](https://github.com/VijayKandiah/accel-sim.github.io/blob/master/assets/img/accelwattch-flowchart.svg)
+![AccelWattch Overview](https://github.com/accel-sim/accel-sim.github.io/blob/master/assets/img/accelwattch-flowchart.svg)
 
 1. **Running AccelWattch SASS SIM**: To run *the simple example from bullet 1* with AccelWattch power estimations enabled using the *AccelWattch SASS SIM* model,
 ```bash
