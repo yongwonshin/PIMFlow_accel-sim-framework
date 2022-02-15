@@ -55,6 +55,8 @@ int active_from_start = 1;
 /* used to select region of interest when active from start is 0 */
 bool active_region = true;
 
+std::string traces_path;
+
 /* opcode to id map and reverse map  */
 std::map<std::string, int> opcode_to_id_map;
 std::map<int, std::string> id_to_opcode_map;
@@ -88,6 +90,8 @@ void nvbit_at_init() {
   GET_VAR_INT(enable_compress, "TOOL_COMPRESS", 1, "Enable traces compression");
   GET_VAR_INT(print_core_id, "TOOL_TRACE_CORE", 0,
               "write the core id in the traces");
+  GET_VAR_INT(traces_path, "TRACES_PATH", "traces",
+              "trace path");
   std::string pad(100, '-');
   printf("%s\n", pad.c_str());
 
@@ -257,7 +261,7 @@ void nvbit_at_cuda_event(CUcontext ctx, int is_exit, nvbit_api_cuda_t cbid,
 
     first_call = false;
 
-    if (mkdir("traces", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) == -1) {
+    if (mkdir(traces_path, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) == -1) {
       if (errno == EEXIST) {
         // alredy exists
       } else {
@@ -275,8 +279,8 @@ void nvbit_at_cuda_event(CUcontext ctx, int is_exit, nvbit_api_cuda_t cbid,
         active_region = false;
     }
 
-    kernelsFile = fopen("./traces/kernelslist", "w");
-    statsFile = fopen("./traces/stats.csv", "w");
+    kernelsFile = fopen("./" + traces_path + "/kernelslist", "w");
+    statsFile = fopen("./" + traces_path + "/stats.csv", "w");
     fprintf(statsFile,
             "kernel id, kernel mangled name, grid_dimX, grid_dimY, grid_dimZ, "
             "#blocks, block_dimX, block_dimY, block_dimZ, #threads, "
@@ -288,7 +292,7 @@ void nvbit_at_cuda_event(CUcontext ctx, int is_exit, nvbit_api_cuda_t cbid,
     if (!is_exit) {
       cuMemcpyHtoD_v2_params *p = (cuMemcpyHtoD_v2_params *)params;
       char buffer[1024];
-      kernelsFile = fopen("./traces/kernelslist", "a");
+      kernelsFile = fopen("./" + traces_path + "/kernelslist", "a");
       sprintf(buffer, "MemcpyHtoD,0x%016lx,%lld", p->dstDevice, p->ByteCount);
       fprintf(kernelsFile, buffer);
       fprintf(kernelsFile, "\n");
@@ -327,7 +331,7 @@ void nvbit_at_cuda_event(CUcontext ctx, int is_exit, nvbit_api_cuda_t cbid,
       }
 
       char buffer[1024];
-      sprintf(buffer, "./traces/kernel-%d.trace", kernelid);
+      sprintf(buffer, "./" + traces_path + "/kernel-%d.trace", kernelid);
 
       if (!stop_report) {
         resultsFile = fopen(buffer, "w");
@@ -361,7 +365,7 @@ void nvbit_at_cuda_event(CUcontext ctx, int is_exit, nvbit_api_cuda_t cbid,
         fprintf(resultsFile, "\n");
       }
 
-      kernelsFile = fopen("./traces/kernelslist", "a");
+      kernelsFile = fopen("./" + traces_path + "/kernelslist", "a");
       sprintf(buffer, "kernel-%d.trace", kernelid);
       if (!stop_report) {
         fprintf(kernelsFile, buffer);
@@ -369,7 +373,7 @@ void nvbit_at_cuda_event(CUcontext ctx, int is_exit, nvbit_api_cuda_t cbid,
       }
       fclose(kernelsFile);
 
-      statsFile = fopen("./traces/stats.csv", "a");
+      statsFile = fopen("./" + traces_path + "/stats.csv", "a");
       unsigned blocks = p->gridDimX * p->gridDimY * p->gridDimZ;
       unsigned threads = p->blockDimX * p->blockDimY * p->blockDimZ;
 
@@ -415,7 +419,7 @@ void nvbit_at_cuda_event(CUcontext ctx, int is_exit, nvbit_api_cuda_t cbid,
           reported_dynamic_instr_counter - old_total_reported_insts;
       old_total_reported_insts = reported_dynamic_instr_counter;
 
-      statsFile = fopen("./traces/stats.csv", "a");
+      statsFile = fopen("./" + traces_path + "/stats.csv", "a");
       fprintf(statsFile, "%d,%d", total_insts_per_kernel,
               reported_insts_per_kernel);
       fprintf(statsFile, "\n");
