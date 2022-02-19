@@ -9,4 +9,4 @@ function run {
 
 # example: run traces kernelslist.g
 # example: run traces kernelslist.g.processed
-run $1 $2 $3 $4
+run $1 $2 $3 $5
