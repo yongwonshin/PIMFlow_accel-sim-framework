@@ -42,5 +42,4 @@ for s, t in r:
 
 assert len(r) == 9
 
-print(r[2][0], r[4][1])
-
+print(r[2][0], r[6][1])
