@@ -3,7 +3,7 @@ import string
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--post-process", action="store_true", help="only check for trace validity", default=False)
-parser.add_argument("--path", help="trace path from accel-sim-framework/util/tracer_nvbit", required=True)
+parser.add_argument("--path", help="trace path from accelsim_frontend/util/tracer_nvbit", required=True)
 parser.add_argument("--skip", help="skip first N forward_kernel_cuda_start", type=int, default=4)
 parser.add_argument("--post-process-only-overhead", action="store_true", help="only check for trace validity", default=False)
 args = parser.parse_args()
@@ -134,4 +134,7 @@ if args.post_process_only_overhead:
 
       if n not in sincos:
         g.write(l)
+
+
+
 

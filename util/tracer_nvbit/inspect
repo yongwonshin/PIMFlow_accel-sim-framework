@@ -1,7 +1,8 @@
 import argparse
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--path", help="trace path from accel-sim-framework/util/tracer_nvbit", required=True)
+parser.add_argument("--path", help="trace path from accelsim_frontend/util/tracer_nvbit", required=True)
+parser.add_argument("--iteration", type=int, default=3, help="iteration")
 args = parser.parse_args()
 
 TRACE_PATH=args.path
@@ -27,19 +28,21 @@ with open(f"./{TRACE_PATH}/stats.csv") as f:
     name = l[1].strip()
 
     if name.find("forward_kernel_cuda_start") != -1:
-      if skip:
-        skip = False
-        continue
+      # if skip:
+      #   skip = False
+      #   continue
 
       START = n
 
     if START is not None and name.find("forward_kernel_cuda_end") != -1:
       r.append((START, n))
 
+
 intv = r[0][1] - r[0][0]
 for s, t in r:
   assert intv == t - s
 
-assert len(r) == 9
+assert len(r) == args.iteration
 
-print(r[2][0], r[6][1])
+print(r[0][0], r[2][1])
+
