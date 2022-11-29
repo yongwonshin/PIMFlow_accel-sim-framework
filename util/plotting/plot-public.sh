@@ -1,5 +1,5 @@
 rm -rf gpgpu-sim_distribution
-git clone https://github.com/gpgpu-sim/gpgpu-sim_distribution.git
+git clone https://github.com/yongwonshin/PIMFlow_gpgpu-sim_distribution.git
 cd gpgpu-sim_distribution
 git checkout dev
 GIT_COMMIT=`git rev-parse --short HEAD`
