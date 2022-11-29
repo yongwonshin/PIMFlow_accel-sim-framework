@@ -36,11 +36,7 @@ else
 fi
 
 if [ ! -d "$ACCELSIM_ROOT/gpgpu-sim" ] ; then
-    git clone https://github.com/yongwonshin/PIMFlow_gpgpu-sim_distribution.git  $ACCELSIM_ROOT/gpgpu-sim
-    git -C $ACCELSIM_ROOT/gpgpu-sim/ checkout dev
-else
-    git -C $ACCELSIM_ROOT/gpgpu-sim/ checkout dev
-    git -C $ACCELSIM_ROOT/gpgpu-sim/ pull
+    git clone -b 2023cgo-artifact https://github.com/yongwonshin/PIMFlow_gpgpu-sim_distribution.git  $ACCELSIM_ROOT/gpgpu-sim
 fi
 
 source $ACCELSIM_ROOT/gpgpu-sim/setup_environment $ACCELSIM_CONFIG
